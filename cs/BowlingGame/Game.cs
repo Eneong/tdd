@@ -49,6 +49,9 @@ namespace BowlingGame
 
         private List<Frame> frames = new List<Frame>(10);
 
+        public bool IsOver =>
+            false;
+
         public void Roll(int pins)
         {
             AddBonuses(pins);
@@ -148,6 +151,39 @@ namespace BowlingGame
 
             game.GetScore()
                 .Should().Be(18);
+        }
+
+        [Test]
+        public void DoubleNextStrikeScores_AfterStrike()
+        {
+            var game = new Game();
+
+            game.Roll(10);
+            game.Roll(5);
+            game.Roll(5);
+            game.Roll(10);
+
+            game.GetScore()
+                .Should().Be(50);
+        }
+
+        [Test]
+        public void GameIsOver_After10Strike()
+        {
+            var game = new Game();
+
+            game.Roll(10);
+            game.Roll(10);
+            game.Roll(10);
+            game.Roll(10);
+            game.Roll(10);
+            game.Roll(10);
+            game.Roll(10);
+            game.Roll(10);
+            game.Roll(10);
+            game.Roll(10);
+
+            game.IsOver.Should().BeTrue();
         }
     }
 }

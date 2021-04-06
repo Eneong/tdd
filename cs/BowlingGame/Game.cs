@@ -49,8 +49,9 @@ namespace BowlingGame
 
         private List<Frame> frames = new List<Frame>(10);
 
-        public bool IsOver =>
-            false;
+        public bool IsOver => 
+            frames.Count == 10 &&
+            frames[9].IsOver;
 
         public void Roll(int pins)
         {

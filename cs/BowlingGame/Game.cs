@@ -7,14 +7,16 @@ namespace BowlingGame
 {
     public class Game
     {
+        private int currentScore = 0;
+
         public void Roll(int pins)
         {
-
+            currentScore += pins;
         }
 
         public int GetScore()
         {
-            return 0;
+            return currentScore;
         }
     }
 

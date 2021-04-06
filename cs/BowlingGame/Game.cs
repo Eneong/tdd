@@ -137,5 +137,18 @@ namespace BowlingGame
             game.GetScore()
                 .Should().Be(20);
         }
+
+        [Test]
+        public void DoubleNextScore_AfterStrike()
+        {
+            var game = new Game();
+
+            game.Roll(10);
+            game.Roll(2);
+            game.Roll(2);
+
+            game.GetScore()
+                .Should().Be(18);
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace BowlingGame
     {
         public void Roll(int pins)
         {
+
         }
 
         public int GetScore()
@@ -26,6 +27,17 @@ namespace BowlingGame
             new Game()
                 .GetScore()
                 .Should().Be(0);
+        }
+
+        [Test]
+        public void AddScore_AfterRoll()
+        {
+            var game = new Game();
+
+            game.Roll(5);
+
+            game.GetScore()
+                .Should().Be(5);
         }
     }
 }

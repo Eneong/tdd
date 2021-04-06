@@ -41,5 +41,18 @@ namespace BowlingGame
             game.GetScore()
                 .Should().Be(5);
         }
+
+        [Test]
+        public void DoubleNextScore_AfterSpare()
+        {
+            var game = new Game();
+
+            game.Roll(5);
+            game.Roll(5);
+            game.Roll(5);
+
+            game.GetScore()
+                .Should().Be(20);
+        }
     }
 }

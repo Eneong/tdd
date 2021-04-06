@@ -12,7 +12,7 @@ namespace BowlingGame
         {
             public int? FirstRoll { get; private set; }
             public int? SecondRoll { get; private set; }
-            public int? Bonus { get; private set; }
+            public int Bonus { get; private set; }
 
             public void AddRoll(int pins)
             {
@@ -26,7 +26,7 @@ namespace BowlingGame
 
             public void AddBonus(int bonus)
             {
-                Bonus = bonus;
+                Bonus += bonus;
             }
 
             public bool IsOver =>
@@ -42,7 +42,7 @@ namespace BowlingGame
             public int Score =>
                 (FirstRoll ?? 0) +
                 (SecondRoll ?? 0) +
-                (Bonus ?? 0);
+                Bonus;
         }
 
         private List<(int BonusRepeats, Frame Frame)> superFrames = new List<(int, Frame)>(); //Todo нормальное название надо)

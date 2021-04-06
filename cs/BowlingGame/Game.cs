@@ -30,10 +30,14 @@ namespace BowlingGame
             }
 
             public bool IsOver =>
-                 SecondRoll != null;
+                 SecondRoll != null || IsStrike;
+
+            public bool IsStrike =>
+                FirstRoll == 10;
 
             public bool IsSpare =>
-                FirstRoll + SecondRoll == 10;
+                !IsStrike &&
+                (FirstRoll + SecondRoll == 10);
 
             public int Score =>
                 (FirstRoll ?? 0) +
@@ -41,7 +45,7 @@ namespace BowlingGame
                 (Bonus ?? 0);
         }
 
-        private LinkedList<(int BonusRepeats, Frame Frame)> superFrames = new LinkedList<(int, Frame)>(); //Todo нормальное название надо)
+        private List<(int BonusRepeats, Frame Frame)> superFrames = new List<(int, Frame)>(); //Todo нормальное название надо)
 
         private List<Frame> frames = new List<Frame>(10);
 
@@ -54,7 +58,9 @@ namespace BowlingGame
             frame.AddRoll(pins);
 
             if (frame.IsSpare)
-                superFrames.AddLast((1, frame));
+                superFrames.Add((1, frame));
+            if (frame.IsStrike)
+                superFrames.Add((2, frame));
         }
 
         public int GetScore()
@@ -83,22 +89,15 @@ namespace BowlingGame
             if (superFrames.Count == 0)
                 return;
 
-            var currentFrame = superFrames.First;
-            while (currentFrame != null)
+            for (int i = superFrames.Count - 1; i >= 0; i--)
             {
-                currentFrame.Value.Frame.AddBonus(pins);
-                if (currentFrame.Value.BonusRepeats == 1)
+                superFrames[i].Frame.AddBonus(pins);
+                if (superFrames[i].BonusRepeats == 1)
                 {
-                    currentFrame = currentFrame.Next;
-                    if (currentFrame == null)
-                    {
-                        superFrames.RemoveLast();
-                        break;
-                    }
-
-                    superFrames.Remove(currentFrame.Previous);
+                    superFrames.RemoveAt(i);
                     continue;
                 }
+                superFrames[i] = (1, superFrames[i].Frame);
             }
         }
     }
@@ -139,7 +138,7 @@ namespace BowlingGame
         }
 
         [Test]
-        public void DoubleNextScore_AfterStrike()
+        public void DoubleNextScores_AfterStrike()
         {
             var game = new Game();
 
